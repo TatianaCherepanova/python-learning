@@ -61,15 +61,37 @@ def draw_cat_ear(xy, r, angle, colors):
     a = angle_step(xy, r, angle + 0.5)
     draw.polygon([c, b, a], colors.body, colors.line)
 
+def draw_cat_whiskers(xy, r, color):
+    """функция рисования усов
+    принимает список из двух координат в виде тьюпла
+    to - расчет второй точки на окружности головы
+    height - длина усов"""
+    angles = [195, 210, 225, 315, 330, 345]
+    height = r * 1.5
+    for angle in angles:
+        to = angle_step(xy, height, math.radians(angle))
+        draw.line([xy, to], fill = color)
+
+def draw_cat_mouth(xy, r, color):
+    angles = [240, 300]
+    height = r * 0.3
+    for angle in angles:
+        to = angle_step(xy, height, math.radians(angle))
+        draw.line([xy, to], fill = color)
+
 def draw_cat_nose(xy, r, colors): 
     """ xy - координаты центральной точки головы
         r - радиус головы"""            
     x, y = xy
     width = r / 3
-    y_shift = r / 5  
+    y_shift = r / 5
+    y_shift_d = r / 5
     a = (x - width / 2, y + y_shift)
     b = (x + width / 2, y + y_shift)
     c = angle_step(b, width, math.radians(180 + 60))
+    d = (x, y + y_shift_d)
+    draw_cat_whiskers(d, r, colors.line)
+    draw_cat_mouth(c, r, colors.line)
     draw.polygon([c, b, a], colors.nose, colors.line)
 
 def draw_cat_head(xy, r, colors):
@@ -103,10 +125,10 @@ def draw_cat(xy, r, colors=cat_colors()):
     draw_cat_head((x, y - r / 3), r / 1.2, colors)
     draw_cat_tail(xy, r, math.radians(30), colors)
 
-draw_cat((250, 300), 80)
+draw_cat((250, 300), 80, cat_colors(line="violet", body="white", eye="blue", nose="black"))
 draw_cat((420, 380), 50, cat_colors(body="red", eye="blue"))
 draw_cat((500, 600), 100, cat_colors(line="white", body="magenta", eye="green", nose="pink"))
-draw_cat((750, 250), 160, cat_colors(line="violet", body="white", eye="blue", nose="black"))
+draw_cat((750, 250), 160)
 
 img.show()
 
