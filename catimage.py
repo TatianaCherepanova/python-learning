@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw
 import math
 
-img = Image.new("RGB", (1024, 768))
+img = Image.new("RGBA", (1024, 768))
 draw = ImageDraw.Draw(img)
 
 class cat_colors:
@@ -130,6 +130,16 @@ draw_cat((420, 380), 50, cat_colors(body="red", eye="blue"))
 draw_cat((500, 600), 100, cat_colors(line="white", body="magenta", eye="green", nose="pink"))
 draw_cat((750, 250), 160)
 
+c = img.rotate(30)
+
+
+#n = Image.merge("RGB", img.split()[0:-1])
+img.paste(c, mask=c)
+c.split()[3].show()
+#n.show()
+
+#for l in n.split():
+#    l.show()
 img.show()
 
 #math.radians
