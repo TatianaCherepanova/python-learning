@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageColor
 import math
 
 img = Image.new("RGBA", (1024, 768))
@@ -10,20 +10,9 @@ class cat_colors:
         self.body = body
         self.eye = eye
         self.nose = nose
-
-#v = cat_colors("white", "red")
-#h = cat_colors(eye="blue", body="red")
-#a = cat_colors("red", "red", "blue", "magenta")
-
-
-#print(a.body)
-#print(a.nose)
-
-#b = cat_colors("blue", "red", "blue", "white")
-#print(a.nose)
-#print(b.nose)
-
-#c = cat_colors("blue", "red", "blue", "white")
+        dark_color = ImageColor.getrgb(body)
+        r, g, b = dark_color 
+        self.dark_zone = (int(r * 0.9), int(g * 0.9), int(b * 0.9))
 
 def draw_circle(xy, r, fill=None, outline=None):    
     """ функция для рисования тела животного
@@ -36,7 +25,7 @@ def draw_finger(xy, r, angle, finger_r, colors):
     """функция для рисования меньшего круга с 
        центром на окружности большого круга"""
     c = angle_step(xy, r, angle)
-    draw_circle(c, finger_r, colors.body, colors.line)
+    draw_circle(c, finger_r, colors.dark_zone, colors.line)
 
 def draw_animal_body(xy, r, colors):
     draw_circle(xy, r, colors.body, colors.line)
@@ -47,6 +36,16 @@ def draw_animal_body(xy, r, colors):
 def draw_animal_eye(xy, r, colors):
     draw_circle(xy, r, colors.eye, colors.line)
     draw_circle(xy, r / 3, colors.line, colors.line)
+    draw_animal_eielid(xy, r, colors.dark_zone, colors.line)
+
+def draw_animal_eielid(xy, r, color, outline):
+    #Starting angle, in degrees. Angles are measured from 3 o’clock, 
+    #increasing clockwise.
+    #Ending angle, in degrees.
+    x, y = xy
+    start = 180
+    end = 0
+    draw.chord([(x - r, y - r), (x + r, y + r)], start, end, color, outline)
 
 def angle_step(xy, height, angle):
     x, y = xy
@@ -59,7 +58,7 @@ def draw_cat_ear(xy, r, angle, colors):
     c = angle_step(xy, height, angle)
     b = angle_step(xy, r, angle - 0.5)
     a = angle_step(xy, r, angle + 0.5)
-    draw.polygon([c, b, a], colors.body, colors.line)
+    draw.polygon([c, b, a], colors.dark_zone, colors.line)
 
 def draw_cat_whiskers(xy, r, color):
     """функция рисования усов
@@ -117,7 +116,7 @@ def draw_cat_tail(xy, r, angle, colors):
     #b = angle_step(xy, width / 2, angle + math.radians(90))
     c = angle_step(b, hight, angle)
     d = angle_step(a, hight, angle)
-    draw.polygon([a, b, c, d], colors.body, colors.line)
+    draw.polygon([a, b, c, d], colors.dark_zone, colors.line)
 
 def draw_cat(xy, r, colors=cat_colors()):
     draw_animal_body(xy, r, colors)
@@ -125,17 +124,24 @@ def draw_cat(xy, r, colors=cat_colors()):
     draw_cat_head((x, y - r / 3), r / 1.2, colors)
     draw_cat_tail(xy, r, math.radians(30), colors)
 
-draw_cat((250, 300), 80, cat_colors(line="violet", body="white", eye="blue", nose="black"))
-draw_cat((420, 380), 50, cat_colors(body="red", eye="blue"))
-draw_cat((500, 600), 100, cat_colors(line="white", body="magenta", eye="green", nose="pink"))
-draw_cat((750, 250), 160)
+cats = [
+    ((250, 300), 80, cat_colors(line="violet", body="white", eye="blue", nose="black")),
+    ((420, 380), 50, cat_colors(body="red", eye="blue")),
+    ((500, 600), 100, cat_colors(line="white", body="magenta", eye="green", nose="pink")),
+    ((750, 250), 160, cat_colors()),
+    ((150, 600), 90, cat_colors(body="purple"))
+]
+for cat in cats:
+    draw_cat(*cat)
+for (x, y), sz, colors in cats:
+    draw_cat((x, y + 40), sz, colors)
 
-c = img.rotate(30)
+#c = img.rotate(30)
 
 
 #n = Image.merge("RGB", img.split()[0:-1])
-img.paste(c, mask=c)
-c.split()[3].show()
+#img.paste(c, mask=c)
+#c.split()[3].show()
 #n.show()
 
 #for l in n.split():
