@@ -4,7 +4,7 @@ import math
 img = Image.new("RGBA", (1024, 768))
 draw = ImageDraw.Draw(img)
 
-class cat_colors:
+class animal_colors:
     def __init__(self, line = "black", body = "grey", eye = "yellow", nose = "white"):
         self.line = line
         self.body = body
@@ -78,7 +78,7 @@ def draw_cat_mouth(xy, r, color):
         to = angle_step(xy, height, math.radians(angle))
         draw.line([xy, to], fill = color)
 
-def draw_cat_nose(xy, r, colors): 
+def draw_cat_face(xy, r, colors): 
     """ xy - координаты центральной точки головы
         r - радиус головы"""            
     x, y = xy
@@ -103,7 +103,7 @@ def draw_cat_head(xy, r, colors):
     draw_circle(xy, r, colors.body, colors.line)
     draw_animal_eye((x - x_shift, y - y_shift), eye_r, colors)
     draw_animal_eye((x + x_shift, y - y_shift), eye_r, colors)
-    draw_cat_nose(xy, r, colors)
+    draw_cat_face(xy, r, colors)
 
 def draw_cat_tail(xy, r, angle, colors):
     x, y = xy
@@ -118,24 +118,91 @@ def draw_cat_tail(xy, r, angle, colors):
     d = angle_step(a, hight, angle)
     draw.polygon([a, b, c, d], colors.dark_zone, colors.line)
 
-def draw_cat(xy, r, colors=cat_colors()):
+def draw_cat(xy, r, colors=animal_colors()):
     draw_animal_body(xy, r, colors)
     x, y = xy
     draw_cat_head((x, y - r / 3), r / 1.2, colors)
     draw_cat_tail(xy, r, math.radians(30), colors)
 
+def draw_dog_whiskers(xy, r, colors):
+    pass
+
+def draw_dog_mouth(xy, r, color):
+    x, y = xy
+    width = r / 3 * 2
+    height = width / 2
+    draw.arc(
+      [
+        (x - width, y - height / 2),
+        (x, y + height / 2)
+      ],
+      0, 180, color
+    )
+    draw.arc(
+      [
+        (x, y - height / 2),
+        (x + width, y + height / 2)
+      ],
+      0, 180, color
+    )
+
+def draw_dog_face(xy, r, colors):
+    x, y = xy
+    width = r / 3
+    height = width * 3 / 4
+    #TODO: under construction
+    draw_dog_whiskers((0,0), r, colors.line)
+    draw_dog_mouth((x, y + 3 * height / 2 / 2), r, colors.line)
+    #рисуем нос
+    draw.rectangle(
+      [
+        (x - width / 3 / 2, y - height / 2 / 2),
+        (x + width / 3 / 2, y + 3 * (height / 2 / 2))
+      ], 
+      colors.nose, 
+      colors.line
+    )
+    draw.rectangle(
+      [
+        (x - width / 2, y - height / 2 / 2),
+        (x + width / 2, y + height / 2)
+      ], 
+      colors.nose, 
+      colors.line
+    )
+
+def draw_dog_head(xy, r, colors):
+    x, y = xy
+    x_shift = r / 2.5 
+    y_shift = r / 5
+    eye_r = r / 3
+    draw_cat_ear(xy, r, math.radians(45), colors)
+    draw_cat_ear(xy, r, math.radians(135), colors)
+    draw_circle(xy, r, colors.body, colors.line)
+    draw_animal_eye((x - x_shift, y - y_shift), eye_r, colors)
+    draw_animal_eye((x + x_shift, y - y_shift), eye_r, colors)
+    draw_dog_face(xy, r, colors)
+
+def draw_dog(xy, r, colors=animal_colors()):
+    draw_animal_body(xy, r, colors)
+    x, y = xy
+    draw_dog_head((x, y - r / 3), r / 1.5, colors)
+    #TODO: under construction
+    #draw_dog_tail(xy, r, math.radians(150), colors)
+
 cats = [
-    ((250, 300), 80, cat_colors(line="violet", body="white", eye="blue", nose="black")),
-    ((420, 380), 50, cat_colors(body="red", eye="blue")),
-    ((500, 600), 100, cat_colors(line="white", body="magenta", eye="green", nose="pink")),
-    ((750, 250), 160, cat_colors()),
-    ((150, 600), 90, cat_colors(body="purple"))
+    ((250, 300), 80, animal_colors(line="violet", body="white", eye="blue", nose="black")),
+    ((420, 380), 50, animal_colors(body="red", eye="blue")),
+    ((500, 600), 100, animal_colors(line="white", body="magenta", eye="green", nose="pink")),
+    
+    ((150, 600), 90, animal_colors(body="purple"))
 ]
 for cat in cats:
     draw_cat(*cat)
 for (x, y), sz, colors in cats:
     draw_cat((x, y + 40), sz, colors)
 
+draw_dog((750, 250), 160, animal_colors())
 #c = img.rotate(30)
 
 
