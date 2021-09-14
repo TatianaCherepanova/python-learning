@@ -38,10 +38,11 @@ def draw_animal_body(xy, r, colors):
         draw_finger(xy, r, math.pi * angle, r / 10, colors)
 
 
-def draw_animal_eye(xy, r, colors):
+def draw_animal_eye(xy, r, colors, is_eyelid=True):
     draw_circle(xy, r, colors.eye, colors.line)
     draw_circle(xy, r / 3, colors.line, colors.line)
-    draw_animal_eyelid(xy, r, colors.dark_zone, colors.line)
+    if is_eyelid:
+        draw_animal_eyelid(xy, r, colors.dark_zone, colors.line)
 
 
 def draw_animal_eyelid(xy, r, color, outline):
@@ -138,28 +139,32 @@ def draw_cat(xy, r, colors=AnimalColors()):
     draw_cat_tail(xy, r, math.radians(30), colors)
 
 
-def draw_dog_whiskers(xy, r, colors):
-    pass
+
 
 
 def draw_dog_mouth(xy, r, color):
     x, y = xy
     width = r / 3 * 2
-    height = width / 2
+    height = width / 3 * 2
+    wiskers = []
     draw.arc(
       [
-        (x - width, y - height / 2),
-        (x, y + height / 2)
+        (x - width, y),
+        (x, y + height)
       ],
-      0, 180, color
+      0, 200, color
     )
+    wiskers.append((x - width / 3, y + height / 3))
+    wiskers.append((x - width / 2, y + 2 * height / 3))
+    wiskers.append((x - 2 * width / 3, y + height / 3))
     draw.arc(
       [
-        (x, y - height / 2),
-        (x + width, y + height / 2)
+        (x, y),
+        (x + width, y + height)
       ],
-      0, 180, color
+      340, 180, color
     )
+    draw.point(wiskers, color)
 
 
 def draw_dog_face(xy, r, colors):
@@ -167,25 +172,31 @@ def draw_dog_face(xy, r, colors):
     width = r / 3
     height = width * 3 / 4
     # TODO: under construction
-    draw_dog_whiskers((0, 0), r, colors.line)
-    draw_dog_mouth((x, y + 3 * height / 2 / 2), r, colors.line)
+    draw_dog_mouth(xy, r, colors.line)
     # рисуем нос
     draw.rectangle(
         [
-            (x - width / 3 / 2, y - height / 2 / 2),
-            (x + width / 3 / 2, y + 3 * (height / 2 / 2))
+            (x - width / 3 / 2, y),
+            (x + width / 3 / 2, y + height)
         ],
         colors.nose,
         colors.line
     )
     draw.rectangle(
         [
-            (x - width / 2, y - height / 2 / 2),
-            (x + width / 2, y + height / 2)
+            (x - width / 2, y),
+            (x + width / 2, y + 2 * height / 3)
         ],
         colors.nose,
         colors.line
     )
+
+
+def draw_dog_ear(xy, r, colors):
+    x, y = xy
+    width = r
+    height = width
+    draw.ellipse([(x - width / 4, y - height / 1.5), (x + width / 4, y + height / 1.5)], colors.dark_zone, colors.line)
 
 
 def draw_dog_head(xy, r, colors):
@@ -193,12 +204,18 @@ def draw_dog_head(xy, r, colors):
     x_shift = r / 2.5
     y_shift = r / 5
     eye_r = r / 3
-    draw_cat_ear(xy, r, math.radians(45), colors)
-    draw_cat_ear(xy, r, math.radians(135), colors)
+    ear_r = r / 2
+    x_shift_ear = r
+    y_shift_ear = r / 7
+    # draw_cat_ear(xy, r, math.radians(45), colors)
+    # draw_cat_ear(xy, r, math.radians(135), colors)
     draw_circle(xy, r, colors.body, colors.line)
-    draw_animal_eye((x - x_shift, y - y_shift), eye_r, colors)
+    draw_animal_eye((x - x_shift, y - y_shift), eye_r, colors, False)
     draw_animal_eye((x + x_shift, y - y_shift), eye_r, colors)
-    draw_dog_face(xy, r, colors)
+    draw_dog_face((x, y + r / 5), r, colors)
+    draw_dog_ear((x - x_shift_ear, y + y_shift_ear), r, colors)
+    draw_dog_ear((x + x_shift_ear, y + y_shift_ear), r, colors)
+
 
 
 def draw_dog(xy, r, colors=AnimalColors()):
@@ -245,7 +262,7 @@ def main():
     ):
         draw.line([start, end])
 
-    draw_dog((750, 250), 160, AnimalColors())
+    draw_dog((750, 250), 160, AnimalColors(body="#6D4C41", nose="black", eye="#69F0AE"))
     # c = img.rotate(30)
 
     # n = Image.merge("RGB", img.split()[0:-1])
