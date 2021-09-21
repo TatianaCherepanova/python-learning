@@ -139,9 +139,6 @@ def draw_cat(xy, r, colors=AnimalColors()):
     draw_cat_tail(xy, r, math.radians(30), colors)
 
 
-
-
-
 def draw_dog_mouth(xy, r, color):
     x, y = xy
     width = r / 3 * 2
@@ -217,13 +214,25 @@ def draw_dog_head(xy, r, colors):
     draw_dog_ear((x + x_shift_ear, y + y_shift_ear), r, colors)
 
 
+def draw_dog_tail(xy, r, angle, colors):
+    #lengh = r * 1.3
+    #width = r / 2
+    lengh = r * 2
+    width = r / 2
+    a = angle_step(xy, lengh, angle)
+    angle = angle + math.radians(90)
+    b = angle_step(a, width, angle)
+    angle_shift = math.radians(45)
+    c = angle_step(b, width / 2 / math.sin(angle_shift), math.radians(180) + angle - angle_shift)
+    draw.polygon([xy, a, b, c], colors.dark_zone, colors.line)
+
 
 def draw_dog(xy, r, colors=AnimalColors()):
+    draw_dog_tail(xy, r, math.radians(150), colors)
     draw_animal_body(xy, r, colors)
     x, y = xy
     draw_dog_head((x, y - r / 3), r / 1.5, colors)
-    # TODO: under construction
-    # draw_dog_tail(xy, r, math.radians(150), colors)
+
 
 
 def main():
