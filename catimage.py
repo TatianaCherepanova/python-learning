@@ -214,17 +214,54 @@ def draw_dog_head(xy, r, colors):
     draw_dog_ear((x + x_shift_ear, y + y_shift_ear), r, colors)
 
 
-def draw_dog_tail(xy, r, angle, colors):
+def draw_dog_tail(a, r, angle, colors):
     #lengh = r * 1.3
     #width = r / 2
     lengh = r * 2
     width = r / 2
-    a = angle_step(xy, lengh, angle)
-    angle = angle + math.radians(90)
-    b = angle_step(a, width, angle)
-    angle_shift = math.radians(45)
-    c = angle_step(b, width / 2 / math.sin(angle_shift), math.radians(180) + angle - angle_shift)
-    draw.polygon([xy, a, b, c], colors.dark_zone, colors.line)
+    ab = lengh
+    b = angle_step(a, ab, angle)
+
+    angle_abc = math.radians(90)
+    bc = width
+    c = angle_step(b, bc, angle + angle_abc)
+    
+    angle_bcd = math.radians(45)
+    cd = width / 2 / math.cos(angle_bcd)
+    d = angle_step(c, cd, angle - math.radians(90) - angle_bcd)
+
+    angle_cde = math.radians(90)
+    catet = width / 2 / 3 * 2
+    de = math.sqrt(catet ** 2 + catet ** 2)
+    angle_cdz = math.radians(180 - 90) - angle_bcd
+    e = angle_step(d, de, angle + angle_cdz + angle_cde)
+
+    angle_def = math.radians(80)
+    op = width / 2 / 3
+    angle_edo = math.radians(180) - angle_cdz - angle_cde
+    oe = math.sin(angle_edo) * de
+    ep = op + oe
+    angle_dep = math.radians(180 - 90) - angle_edo
+    angle_pef = angle_def - angle_dep
+    ef = ep / math.cos(angle_pef)
+    f = angle_step(e, ef, angle - (math.radians(90) - angle_dep) - angle_def)
+
+    angle_efg = math.radians(30)
+    fg = ef / 2
+    angle_pfe = math.radians(180 - 90) - angle_pef
+    g = angle_step(f, fg, angle + angle_pfe + angle_efg)
+
+    angle_fgh = math.radians(50)
+    angle_pfg = angle_pfe + angle_efg
+    angle_kgf = math.radians(180 - 90) - angle_pfg
+    #TODO angle_pfg can be negative
+    assert angle_kgf >= 0 
+    angle_kgh = angle_kgf + angle_fgh
+    kg = math.sin(angle_pfg) * fg
+    gh = kg / math.cos(angle_kgh)
+    h = angle_step(g, gh, angle - math.radians(90) - angle_kgh)
+    
+    draw.polygon([a, b, c, d, e, f, g, h], colors.dark_zone, colors.line)
 
 
 def draw_dog(xy, r, colors=AnimalColors()):
