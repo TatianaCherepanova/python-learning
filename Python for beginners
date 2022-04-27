@@ -1,14 +1,45 @@
+# Цвета колеса рулетки
+
+# Напишите программу, которая считывает номер кармана и показывает, является ли этот карман зеленым, красным или черным. 
+# Программа должна вывести сообщение об ошибке, если пользователь вводит число, которое лежит вне диапазона от # 0 до 36.
+
+# При условии: 
+# карман 0 зеленый;
+# для карманов с 1 по 10 карманы с нечетным номером имеют красный цвет, карманы с четным номером – черный;
+# для карманов с 11 по 18 карманы с нечетным номером имеют черный цвет, карманы с четным номером – красный;
+# для карманов с 19 по 28 карманы с нечетным номером имеют красный цвет, карманы с четным номером – черный;
+# для карманов с 29 по 36 карманы с нечетным номером имеют черный цвет, карманы с четным номером – красный.
+
+def color_roulet_1():
+    a = int(input())
+    if a < 0 or a > 36:
+        print("ошибка ввода")
+    elif a == 0:
+        print("зеленый")
+    elif 1 <= a <= 10: 
+        print("красный" if a % 2 != 0 else "черный")
+    elif 11 <= a <= 18: 
+        print("черный" if a % 2 != 0 else "красный")
+    elif 19 <= a <= 28: 
+        print("красный" if a % 2 != 0 else "черный")
+    else:
+        print("черный" if a % 2 != 0 else "красный")
+
+def color_roulet_1():
+    a = int(input())
+    print('ошибка ввода' if not 0 <= a < 37 else 'зеленый' if a == 0 else ['черный','красный'][a % 2 == (1 <= a <= 10 or 19 <= a <= 28)])
+
 # Цветовой микшер
+
 # Напишите программу, которая считывает названия двух основных цветов для смешивания. 
 # Если пользователь вводит что-нибудь помимо названий «красный», «синий» или «желтый», то программа должна вывести сообщение об ошибке. 
 # В противном случае программа должна вывести название вторичного цвета, который получится в результате.
-# Формат входных данных
+
 # На вход программе подаются две строки, каждая на отдельной строке.
 # Программа должна вывести полученный цвет смешения либо сообщение «ошибка цвета», если введён был не цвет.
 
-# ver. 1
 
-def color_mix ():
+def color_mix_1():
     a = str(input())
     b = str(input())
     if (a == "красный" and b == "синий") or (a == "синий" and b == "красный"):
@@ -25,60 +56,70 @@ def color_mix ():
         print("желтый")
     elif a and b != "красный" or "синий" or "желтый":
         print("ошибка цвета")
+ 
+def color_mix_2():
+    if a not in ("красный", "синий", "желтый") or b not in ("красный", "синий", "желтый"):
+        print("ошибка цвета")
+    elif a == b:
+        print("красный" if a == b == "красный" else "синий" if a == b == "синий" else "желтый")
+    elif (a == "красный" and b == "синий") or (a == "синий" and b == "красный"):
+        print("фиолетовый")    
+    elif (a == "красный" and b == "желтый") or (a == "желтый" and b == "красный"):
+        print("оранжевый")
+    elif (a == "синий" and b == "желтый") or (a == "желтый" and b == "синий"):
+        print("зеленый")
 
 # Программа должна вывести количество дней в заданном месяце (год не високосный)
-# ver. 1
 
-def day_in_month ():
+
+def day_in_month():
     n = int(input())
     print(28 if n == 2 else 30 if n in (4, 6, 9, 11) else 31)
 
-#ver. 2
-
-def_day_in_month_2 ():
+def_day_in_month_2():
     if n = 1 or n = 3 or n = 5 or n = 7 or n = 8 or n = 10 or n = 12:
         print("31")
     elif n = 4 or n = 6 or n = 9 or n = 11:
         print("30")
     else n = 2:
         print("28")
-    
-#ver. 3
-n = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-print(n[int(input())-1])
 
-#ver. 4
-import calendar
-n = int(input())
-print(calendar.monthrange(2021,n)[1])
+
+def_day_in_month_3():
+    n = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    print(n[int(input())-1])
+
+def_day_in_month_4():
+    import calendar
+    n = int(input())
+    print(calendar.monthrange(2021,n)[1])
 
 # Программа должна вывести среднее число из трех
 
-ver. 1
-a, b, c = int(input()), int(input()), int(input())
-if a > b > c:
-    print(b)
-elif a > c > b:
-    print(c)
-elif b > a > c:
-    print(a)
-elif b > c > a:
-    print(c)
-elif c > a > b:
-    print(a)
-elif c > b > a:
-    print(b)
+def average of three_1():
+    a, b, c = int(input()), int(input()), int(input())
+    if a > b > c:
+        print(b)
+    elif a > c > b:
+        print(c)
+    elif b > a > c:
+        print(a)
+    elif b > c > a:
+        print(c)
+    elif c > a > b:
+        print(a)
+    elif c > b > a:
+        print(b)
 
-ver. 2
-a, b, c = int(input()), int(input()), int(input())
-if a > b > c or c > b > a:
-    print(b)
-elif a > c > b or b > c > a:
-    print(c)
-elif b > a > c or c > a > b:
-    print(a)
+def average of three_2():
+    a, b, c = int(input()), int(input()), int(input())
+    if a > b > c or c > b > a:
+        print(b)
+    elif a > c > b or b > c > a:
+        print(c)
+    elif b > a > c or c > a > b:
+        print(a)
 
-ver. 3
-
-a, b, c = int(input()), int(input()), int(input())
-print(b if a > b > c or c > b > a else c if a > c > b or b > c > a else a)
+def average of three_3():
+    a, b, c = int(input()), int(input()), int(input())
+    print(b if a > b > c or c > b > a else c if a > c > b or b > c > a else a)
