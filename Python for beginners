@@ -1,3 +1,38 @@
+
+
+#Пересечение отрезков
+
+def intersection_of_segments_1 ():
+    a1, b1, a2, b2 = int(input()), int(input()), int(input()), int(input())
+    assert a1 < b1 and a2 < b2
+
+    def my_min(x, y):
+        return x if x < y else y
+
+    def my_max(x, y):
+        return x if x > y else y
+
+    a3, b3 = my_max(a1, a2), my_min(b1, b2)
+    if a3 < b3:
+        print(a3, b3)
+    elif a3 > b3:
+        print("пустое множество")
+    else:
+        print(a3)
+        
+def intersection_of_segments_2 ():
+    a1, b1, a2, b2 = int(input()), int(input()), int(input()), int(input())
+
+    assert a1 < b1 and a2 < b2
+
+    a3, b3 = max(a1, a2), min(b1, b2)
+    if a3 < b3:
+        print(a3, b3)
+    elif a3 > b3:
+        print("пустое множество")
+    else:
+        print(a3)
+
 # Цвета колеса рулетки
 
 # Напишите программу, которая считывает номер кармана и показывает, является ли этот карман зеленым, красным или черным. 
