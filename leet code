@@ -1,0 +1,12 @@
+class Solution:
+    def countOdds(self, low: int, high: int) -> int:
+        i = low
+        counter = 0
+        while i <= high:
+            counter += i % 2
+            i += 1
+
+        return counter
+        
+        
+print(Solution().countOdds(3, 7))
